@@ -1,0 +1,24 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+venv/
+ENV/
+env/
+
+# Secrets
+.env
+*.env
+
+# Docker & builds
+*.pid
+*.egg-info/
+dist/
+build/
+
+# SQLite
+*.sqlite3
+
+.idea/
