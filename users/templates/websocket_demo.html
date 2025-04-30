@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Demo</title>
+</head>
+<body>
+    <h1>WebSocket Real-Time Date</h1>
+    <p>Current time will be shown below:</p>
+    <div id="time"></div>
+
+    <h2>Fibonacci Calculation</h2>
+    <input type="number" id="fibonacciInput" placeholder="Enter a number" />
+    <button onclick="sendFibonacci()">Calculate</button>
+    <div id="fibonacciResult"></div>
+
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/');
+
+        socket.onopen = function() {
+            console.log('Connected to Websocket successfully');
+        };
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if (data.message) {
+                document.getElementById('time').textContent = 'Time: ' + data.message;
+            }
+            if (data.result) {
+                document.getElementById('fibonacciResult').textContent = 'Result: ' + data.result;
+            }
+            if (data.error) {
+                document.getElementById('fibonacciResult').textContent = 'Error: ' + data.error;
+            }
+        };
+
+        socket.onclose = function() {
+            console.log('WebSocket disconnected');
+        };
+
+        function sendFibonacci() {
+            const n = document.getElementById('fibonacciInput').value;
+            socket.send(JSON.stringify({ n: n }));
+        }
+    </script>
+</body>
+</html>
