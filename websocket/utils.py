@@ -3,6 +3,9 @@ import json
 from datetime import datetime
 
 def fibonacci(n):
+    """
+    Helper function to calculate the fibonacci number.
+    """
     if n <= 1:
         return n
     a, b = 0, 1
@@ -11,6 +14,9 @@ def fibonacci(n):
     return b
 
 async def send_time(self):
+  """
+  Sends the actual date and time each second.
+  """
   try:
       while True:
           now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

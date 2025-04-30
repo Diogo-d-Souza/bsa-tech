@@ -33,10 +33,16 @@ class BasicConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def add_user(self, channel_name):
+        """
+        Helper function to add the user to database.
+        """
         User.objects.create(channel_name=channel_name)
 
     @sync_to_async
     def remove_user(self, channel_name):
+        """
+        Helper function to remove the user from database.
+        """
         User.objects.filter(channel_name=channel_name).delete()
 
 
@@ -44,11 +50,16 @@ class BasicConsumer(AsyncWebsocketConsumer):
         """
         Method that holds the logic to handle the number send by the user and return the fibonacci number.
         """
-        text_data_json = json.loads(text_data)
+        try:
+            text_data_json = json.loads(text_data)
 
-        n = int(text_data_json.get('n', 0))
-        result = fibonacci(n)
+            n = int(text_data_json.get('n', 0))
+            result = fibonacci(n)
 
-        await self.send(text_data=json.dumps({
-            'result': result
-        }))
+            await self.send(text_data=json.dumps({
+                'result': result
+            }))
+        except ValueError as e:
+            await self.send(text_data=json.dumps({
+                'error': f"Invalid input for Fibonacci: {e}"
+            }))
